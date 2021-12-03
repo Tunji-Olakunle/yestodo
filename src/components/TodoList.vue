@@ -1,54 +1,103 @@
 <script>
-import { ref } from 'vue';
-import { TransitionRoot, TransitionChild } from "@headlessui/vue";
+import { ref, reactive, toRefs } from 'vue'
+import { TransitionRoot, TransitionChild } from "@headlessui/vue"
 // ok it works
 export default{
+  name: 'TodoList',
 
-  data(){
-    return{
-      inputedTask: '',
-      editTaskList: null,
-      availableStatuses: ['Open', 'In Progress', 'Completed'],
-      tasks: []
-    }
-  },
+  setup(){
+    const state = reactive({
+       inputedTask: '',
+       editTaskList: null,
+       availableStatuses: ['Open', 'In Progress', 'Completed'],
+       tasks: []
+    })
 
-  methods:{
-    submitTask(){
-      console.log(this.inputedTask)
-      if (this.inputedTask.length === 0) return
+    const submitTask = () =>{
+      console.log(state.inputedTask)
+      if (state.inputedTask.length === 0) return
 
-      if(this.editTaskList === null){
-          this.tasks.push({
-          name: this.inputedTask,
+      if(state.editTaskList === null){
+          state.tasks.push({
+          name: state.inputedTask,
           status: 'Open'
         })
       }else{
-        this.tasks[this.editTaskList].name = this.inputedTask
-        this.editTaskList = null
+        state.tasks[state.editTaskList].name = state.inputedTask
+        state.editTaskList = null
       }
-      
+      state.inputedTask = ''
+    }
 
-      this.inputedTask = ''
-    },
+    const deleteTask = (index) =>{
+      state.tasks.splice(index, 1)
+    }
+    
+    const editTask = (index) =>{
+      state.inputedTask = state.tasks[index].name
+      state.editTaskList = index
+    }
 
-    deleteTask(index){
-      this.tasks.splice(index, 1)
-    },
-
-    editTask(index){
-      this.inputedTask = this.tasks[index].name
-      this.editTaskList = index
-    },
-
-    changeStatus(index){
-      let newIndex = this.availableStatuses.indexOf(this.tasks[index].status)
+    const changeStatus = (index) =>{
+      let newIndex = state.availableStatuses.indexOf(state.tasks[index].status)
       if(++newIndex > 2){
         newIndex =0
       } 
-      this.tasks[index].status = this.availableStatuses[newIndex]
+      state.tasks[index].status = state.availableStatuses[newIndex]
     }
-  }
+    
+    return{
+      ...toRefs(state),
+      submitTask, deleteTask, editTask, changeStatus
+    }
+  },
+
+
+  // data(){
+  //   return{
+  //     inputedTask: '',
+  //     editTaskList: null,
+  //     availableStatuses: ['Open', 'In Progress', 'Completed'],
+  //     tasks: []
+  //   }
+  // },
+
+  // methods:{
+  //   // submitTask(){
+  //   //   console.log(this.inputedTask)
+  //   //   if (this.inputedTask.length === 0) return
+
+  //   //   if(this.editTaskList === null){
+  //   //       this.tasks.push({
+  //   //       name: this.inputedTask,
+  //   //       status: 'Open'
+  //   //     })
+  //   //   }else{
+  //   //     this.tasks[this.editTaskList].name = this.inputedTask
+  //   //     this.editTaskList = null
+  //   //   }
+      
+
+  //   //   this.inputedTask = ''
+  //   // },
+
+  //   // deleteTask(index){
+  //   //   this.tasks.splice(index, 1)
+  //   // },
+
+  //   editTask(index){
+  //     this.inputedTask = this.tasks[index].name
+  //     this.editTaskList = index
+  //   },
+
+  //   changeStatus(index){
+  //     let newIndex = this.availableStatuses.indexOf(this.tasks[index].status)
+  //     if(++newIndex > 2){
+  //       newIndex =0
+  //     } 
+  //     this.tasks[index].status = this.availableStatuses[newIndex]
+  //   }
+  // }
 
 
 }
@@ -107,7 +156,7 @@ h1{
   @apply text-green-700 text-4xl font-semibold
 }
 .form-div{
-  @apply  mx-10 sm:mx-10 flex flex-col mt-8 border-1  border-green-700 
+  @apply  mx-10 sm:mx-10 flex flex-col mt-8 border-1  border-green-700
 }
 form{
   @apply flex flex-col  flex-1 md:flex-row
