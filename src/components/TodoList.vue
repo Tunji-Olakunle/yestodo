@@ -45,59 +45,13 @@ export default{
       } 
       state.tasks[index].status = state.availableStatuses[newIndex]
     }
-    
+
     return{
       ...toRefs(state),
       submitTask, deleteTask, editTask, changeStatus
     }
-  },
+  }
 
-
-  // data(){
-  //   return{
-  //     inputedTask: '',
-  //     editTaskList: null,
-  //     availableStatuses: ['Open', 'In Progress', 'Completed'],
-  //     tasks: []
-  //   }
-  // },
-
-  // methods:{
-  //   // submitTask(){
-  //   //   console.log(this.inputedTask)
-  //   //   if (this.inputedTask.length === 0) return
-
-  //   //   if(this.editTaskList === null){
-  //   //       this.tasks.push({
-  //   //       name: this.inputedTask,
-  //   //       status: 'Open'
-  //   //     })
-  //   //   }else{
-  //   //     this.tasks[this.editTaskList].name = this.inputedTask
-  //   //     this.editTaskList = null
-  //   //   }
-      
-
-  //   //   this.inputedTask = ''
-  //   // },
-
-  //   // deleteTask(index){
-  //   //   this.tasks.splice(index, 1)
-  //   // },
-
-  //   editTask(index){
-  //     this.inputedTask = this.tasks[index].name
-  //     this.editTaskList = index
-  //   },
-
-  //   changeStatus(index){
-  //     let newIndex = this.availableStatuses.indexOf(this.tasks[index].status)
-  //     if(++newIndex > 2){
-  //       newIndex =0
-  //     } 
-  //     this.tasks[index].status = this.availableStatuses[newIndex]
-  //   }
-  // }
 
 
 }
